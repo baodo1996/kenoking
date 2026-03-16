@@ -30,6 +30,21 @@ $body = requireJsonBody();
 $endpoint = isset($body['endpoint']) ? trim((string)$body['endpoint']) : '';
 $payload  = isset($body['payload']) && is_array($body['payload']) ? $body['payload'] : [];
 
+// Handle local-only endpoint for user balance (no upstream call)
+if ($endpoint === '/local/user_balance') {
+    $userCode = isset($payload['user_code']) ? trim((string)$payload['user_code']) : '';
+    if ($userCode === '') {
+        http_response_code(400);
+        echo json_encode(['status' => 0, 'msg' => 'MISSING_USER_CODE']);
+        exit;
+    }
+    echo json_encode([
+        'status'       => 1,
+        'user_balance' => getUserBalance($userCode),
+    ]);
+    exit;
+}
+
 // Whitelist of allowed upstream endpoints
 $allowed = [
     '/api/v2/game_launch',
