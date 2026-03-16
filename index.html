@@ -3,222 +3,555 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Play Keno online - A modern, fair, and exciting number-based casino game with quests, levels, and social features">
-    <meta name="keywords" content="keno, casino game, online gaming, number game, lottery">
-    <meta name="author" content="Keno Game">
-    
-    <!-- Mobile App Meta Tags -->
+    <meta name="description" content="KingSlots - Play premium online slot games from top providers including Pragmatic Play, PGSoft, CQ9, Habanero and more.">
+    <meta name="keywords" content="online casino, slots, slot games, pragmatic play, pgsoft, cq9, habanero, casino games">
+    <meta name="author" content="KingSlots">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Keno Game">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Keno Game - Play Online Casino">
-    <meta property="og:description" content="Experience the thrill of Keno with modern graphics, quests, and social features">
+    <meta name="apple-mobile-web-app-title" content="KingSlots">
+    <meta property="og:title" content="KingSlots - Premium Online Casino">
+    <meta property="og:description" content="Play premium online slot games from top providers">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourdomain.com">
-    <meta property="og:image" content="https://yourdomain.com/keno-preview.jpg">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Keno Game - Play Online Casino">
-    <meta name="twitter:description" content="Experience the thrill of Keno with modern graphics, quests, and social features">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    
-    <title>Keno Game - Play Online Casino</title>
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" as="audio" type="audio/wav">
-    
+    <meta property="og:url" content="https://luckyluked.com">
+    <title>KingSlots - Premium Online Casino</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Your existing CSS here - I'll include the key parts */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #0d0d14; --surface: #16161f; --surface2: #1e1e2a; --border: #2a2a3a;
+            --accent: #f5a623; --green: #22c55e; --red: #ef4444;
+            --text: #e8e8f0; --text-muted: #8888aa; --radius: 12px;
+            --shadow: 0 4px 24px rgba(0,0,0,.45);
         }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        a { color: inherit; text-decoration: none; }
+        button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+        input { font-family: inherit; outline: none; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            color: #ffffff;
-            min-height: 100vh;
-            overflow-x: hidden;
+        /* Loading overlay */
+        #loading-overlay {
+            position: fixed; inset: 0; z-index: 9999; background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+            transition: opacity .4s ease;
         }
-
-        /* Add your existing CSS here - I'm showing the structure */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        #loading-overlay.hidden { opacity: 0; pointer-events: none; }
+        .spinner {
+            width: 52px; height: 52px; border: 4px solid rgba(245,166,35,.25);
+            border-top-color: var(--accent); border-radius: 50%; animation: spin .85s linear infinite;
         }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { color: var(--accent); font-weight: 600; font-size: 15px; letter-spacing: .5px; }
 
-        /* Include all your existing CSS styles here */
-        /* ... (your existing CSS) ... */
+        /* Header */
+        header { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); }
+        .header-inner { max-width: 1440px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; color: var(--accent); white-space: nowrap; }
+        .logo-icon { font-size: 26px; }
+        .search-wrap { position: relative; flex: 1; max-width: 380px; }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; font-size: 16px; }
+        #search-input { width: 100%; padding: 9px 12px 9px 38px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 14px; transition: border-color .2s; }
+        #search-input:focus { border-color: var(--accent); }
+        #search-input::placeholder { color: var(--text-muted); }
+        .user-panel { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .balance-badge { display: flex; align-items: center; gap: 6px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 14px; font-weight: 600; }
+        .balance-badge .coin { color: var(--accent); font-size: 16px; }
+        #balance-display { color: var(--green); min-width: 60px; text-align: right; }
+        .btn { padding: 8px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; transition: opacity .2s, transform .1s; }
+        .btn:hover { opacity: .88; }
+        .btn:active { transform: scale(.97); }
+        .btn-accent { background: var(--accent); color: #111; }
+        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        #user-greeting { font-size: 14px; color: var(--text-muted); }
 
-        /* Mobile Optimization */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .top-bar {
-                height: 50px;
-                padding: 0 15px;
-            }
-            
-            .level-display {
-                min-width: 180px;
-            }
-            
-            .number-grid {
-                grid-template-columns: repeat(6, 1fr);
-                gap: 6px;
-                padding: 15px;
-            }
-            
-            .number {
-                font-size: 14px;
-            }
-            
-            .action-btn {
-                padding: 12px 20px;
-                font-size: 14px;
-            }
-            
-            .bottom-bar {
-                padding: 10px 15px;
-            }
-            
-            .bottom-icons {
-                gap: 15px;
-            }
-            
-            .bottom-icon {
-                width: 35px;
-                height: 35px;
-                font-size: 16px;
-            }
-        }
+        /* Layout */
+        .main-wrap { max-width: 1440px; margin: 0 auto; padding: 24px; display: flex; gap: 24px; align-items: flex-start; }
 
-        /* Loading Animation */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
+        /* Sidebar */
+        .sidebar { width: 200px; flex-shrink: 0; position: sticky; top: 80px; }
+        .sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; padding-left: 4px; }
+        .provider-list { display: flex; flex-direction: column; gap: 4px; }
+        .provider-btn { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 500; transition: background .2s, color .2s; text-align: left; width: 100%; }
+        .provider-btn:hover { background: var(--surface2); color: var(--text); }
+        .provider-btn.active { background: var(--surface2); color: var(--accent); font-weight: 700; }
+        .provider-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background .2s; }
+        .provider-btn.active .provider-dot { background: var(--accent); }
 
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(0, 212, 170, 0.3);
-            border-top: 3px solid #00d4aa;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+        /* Content */
+        .content { flex: 1; min-width: 0; }
+        .tab-bar { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .tab-btn { padding: 6px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; background: transparent; color: var(--text-muted); border: 1px solid transparent; transition: all .2s; }
+        .tab-btn:hover { color: var(--text); }
+        .tab-btn.active { background: var(--accent); color: #111; border-color: var(--accent); }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--text); }
+        .game-count { font-size: 13px; color: var(--text-muted); }
+        #games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 16px; }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        /* Game card */
+        .game-card { border-radius: var(--radius); overflow: hidden; background: var(--surface2); border: 1px solid var(--border); cursor: pointer; transition: transform .2s, box-shadow .2s, border-color .2s; }
+        .game-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--accent); }
+        .game-card.unavailable { opacity: .45; pointer-events: none; }
+        .game-thumb { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; background: var(--surface); }
+        .game-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+        .game-card:hover .game-thumb img { transform: scale(1.06); }
+        .game-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .2s; }
+        .game-card:hover .game-overlay { opacity: 1; }
+        .play-icon { width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: #111; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; padding-left: 4px; }
+        .game-info { padding: 10px 12px; }
+        .game-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .game-provider-tag { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+        .unavailable-badge { position: absolute; top: 6px; right: 6px; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; color: var(--text-muted); gap: 14px; text-align: center; }
+        .empty-state .icon { font-size: 48px; }
+        .empty-state p { font-size: 15px; }
 
-        /* Hide loading when content is ready */
-        .content-loaded .loading {
-            display: none;
+        /* Game modal */
+        #game-modal { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.82); align-items: center; justify-content: center; }
+        #game-modal.open { display: flex; }
+        .modal-box { position: relative; width: min(96vw, 1100px); height: min(90vh, 720px); background: var(--surface); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 16px 64px rgba(0,0,0,.8); }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+        .modal-close { width: 32px; height: 32px; border-radius: 6px; background: var(--surface2); color: var(--text); font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+        .modal-close:hover { background: var(--red); color: #fff; }
+        #game-frame { flex: 1; width: 100%; border: none; background: #000; }
+        .launch-spinner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.7); }
+
+        /* Auth modal */
+        #auth-modal { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.75); align-items: center; justify-content: center; }
+        #auth-modal.open { display: flex; }
+        .auth-box { width: min(94vw, 420px); background: var(--surface); border-radius: var(--radius); padding: 36px 32px; box-shadow: 0 16px 48px rgba(0,0,0,.7); }
+        .auth-title { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 6px; text-align: center; }
+        .auth-sub { font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 28px; }
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+        .form-input { width: 100%; padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 14px; transition: border-color .2s; }
+        .form-input:focus { border-color: var(--accent); }
+        .form-error { color: var(--red); font-size: 12px; margin-top: 5px; display: none; }
+        .form-error.show { display: block; }
+        .btn-block { width: 100%; padding: 12px; font-size: 15px; }
+        .auth-switch { text-align: center; margin-top: 18px; font-size: 13px; color: var(--text-muted); }
+        .auth-switch a { color: var(--accent); cursor: pointer; }
+        .auth-switch a:hover { text-decoration: underline; }
+
+        /* Toasts */
+        #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { padding: 13px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; box-shadow: var(--shadow); pointer-events: auto; animation: slideIn .3s ease; max-width: 320px; }
+        .toast.success { background: #166534; color: #bbf7d0; border: 1px solid var(--green); }
+        .toast.error { background: #7f1d1d; color: #fecaca; border: 1px solid var(--red); }
+        .toast.info { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+        @keyframes slideIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Responsive */
+        @media (max-width: 900px) { .sidebar { display: none; } .main-wrap { padding: 16px; } }
+        @media (max-width: 600px) {
+            .header-inner { padding: 0 14px; } .logo span { display: none; }
+            .search-wrap { max-width: unset; }
+            #games-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+            .auth-box { padding: 28px 20px; }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading" id="loadingScreen">
-        <div class="loading-spinner"></div>
+
+<div id="loading-overlay">
+    <div class="spinner"></div>
+    <p class="loading-text">Loading Casino&#8230;</p>
+</div>
+
+<header>
+    <div class="header-inner">
+        <div class="logo">
+            <span class="logo-icon">&#9824;</span>
+            <span>KingSlots</span>
+        </div>
+        <div class="search-wrap">
+            <span class="search-icon">&#128269;</span>
+            <input id="search-input" type="search" placeholder="Search games&#8230;" autocomplete="off">
+        </div>
+        <div class="user-panel">
+            <div class="balance-badge" id="balance-wrap" style="display:none">
+                <span class="coin">&#129689;</span>
+                <span id="balance-display">0.00</span>
+            </div>
+            <span id="user-greeting"></span>
+            <button class="btn btn-accent" id="btn-login">Sign In</button>
+            <button class="btn btn-ghost" id="btn-logout" style="display:none">Log Out</button>
+        </div>
     </div>
+</header>
 
-    <!-- Your existing HTML structure here -->
-    <div class="container">
-        <!-- Include all your existing HTML content -->
-        <!-- ... (your existing HTML) ... -->
+<div class="main-wrap">
+    <aside class="sidebar">
+        <p class="sidebar-title">Providers</p>
+        <div class="provider-list" id="provider-list">
+            <button class="provider-btn active" data-code="ALL">
+                <span class="provider-dot"></span>All Providers
+            </button>
+        </div>
+    </aside>
+
+    <main class="content">
+        <div class="tab-bar">
+            <button class="tab-btn active" data-type="slot">Slots</button>
+            <button class="tab-btn" data-type="casino">Live Casino</button>
+        </div>
+        <div class="section-header">
+            <h2 class="section-title" id="section-title">All Slots</h2>
+            <span class="game-count" id="game-count"></span>
+        </div>
+        <div id="games-grid"></div>
+    </main>
+</div>
+
+<div id="game-modal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title" id="modal-game-title">Loading&#8230;</span>
+            <button class="modal-close" id="modal-close-btn" title="Close">&#10005;</button>
+        </div>
+        <div style="position:relative;flex:1;display:flex">
+            <iframe id="game-frame" allowfullscreen></iframe>
+            <div class="launch-spinner" id="launch-spinner">
+                <div class="spinner"></div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <script>
-        // Production Configuration
-        const PRODUCTION_CONFIG = {
-            API_BASE_URL: 'https://yourdomain.com/api', // Update with your domain
-            GAME_URL: 'https://yourdomain.com', // Update with your domain
-            ANALYTICS_ID: 'GA_MEASUREMENT_ID', // Add your Google Analytics ID
-            VERSION: '1.0.0'
-        };
+<div id="auth-modal">
+    <div class="auth-box">
+        <p class="auth-title" id="auth-title">Welcome Back</p>
+        <p class="auth-sub" id="auth-sub">Sign in to play and track your balance</p>
+        <form id="auth-form">
+            <div class="form-group">
+                <label class="form-label" for="auth-username">Username</label>
+                <input class="form-input" id="auth-username" type="text"
+                       placeholder="Enter username" maxlength="40" autocomplete="username">
+                <p class="form-error" id="username-error"></p>
+            </div>
+            <button class="btn btn-accent btn-block" type="submit" id="auth-submit">Sign In</button>
+        </form>
+        <p class="auth-switch" id="auth-switch-text">
+            New here? <a id="auth-switch-link">Create account</a>
+        </p>
+    </div>
+</div>
 
-        // Analytics Setup
-        function initAnalytics() {
-            if (PRODUCTION_CONFIG.ANALYTICS_ID !== 'GA_MEASUREMENT_ID') {
-                // Google Analytics code here
-                console.log('Analytics initialized');
-            }
+<div id="toast-container"></div>
+
+<script>
+'use strict';
+
+const CFG = { proxyUrl: 'api/proxy.php' };
+
+let state = {
+    userCode: null, balance: 0,
+    providers: [], games: [], filteredGames: [],
+    activeProvider: 'ALL', activeType: 'slot', searchQuery: ''
+};
+
+function $(id)    { return document.getElementById(id); }
+function $$(sel)  { return document.querySelectorAll(sel); }
+
+var ESC_MAP = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+function esc(str) {
+    return String(str).replace(/[&<>"']/g, function(c) { return ESC_MAP[c]; });
+}
+
+function formatBalance(val) {
+    return Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+async function apiCall(endpoint, payload) {
+    payload = payload || {};
+    const res = await fetch(CFG.proxyUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint: endpoint, payload: payload })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+}
+
+/* Toast */
+function toast(msg, type, duration) {
+    type = type || 'info'; duration = duration || 3500;
+    const el = document.createElement('div');
+    el.className = 'toast ' + type;
+    el.textContent = msg;
+    $('toast-container').appendChild(el);
+    setTimeout(function() { el.remove(); }, duration);
+}
+
+/* Auth / session */
+function loadSession() {
+    try {
+        const saved = sessionStorage.getItem('ks_user');
+        if (saved) {
+            const d = JSON.parse(saved);
+            if (d.userCode) { state.userCode = d.userCode; state.balance = d.balance || 0; }
         }
+    } catch (e) {}
+}
 
-        // Performance Monitoring
-        function trackPerformance() {
-            if ('performance' in window) {
-                window.addEventListener('load', () => {
-                    const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-                    console.log(`Page load time: ${loadTime}ms`);
-                });
-            }
+function saveSession() {
+    sessionStorage.setItem('ks_user', JSON.stringify({ userCode: state.userCode, balance: state.balance }));
+}
+
+function updateUserUI() {
+    const loggedIn = !!state.userCode;
+    $('btn-login').style.display    = loggedIn ? 'none' : '';
+    $('btn-logout').style.display   = loggedIn ? '' : 'none';
+    $('balance-wrap').style.display = loggedIn ? '' : 'none';
+    $('user-greeting').textContent  = loggedIn ? ('👋 ' + state.userCode) : '';
+    $('balance-display').textContent = formatBalance(state.balance / 100);
+}
+
+async function refreshBalance() {
+    if (!state.userCode) return;
+    try {
+        const data = await apiCall('/api/v2/info');
+        if (data.status === 1 && Array.isArray(data.user_list)) {
+            const u = data.user_list.find(function(x) { return x.user_code === state.userCode; });
+            if (u) { state.balance = u.user_balance; saveSession(); updateUserUI(); }
         }
+    } catch (e) {}
+}
 
-        // Error Handling
-        window.addEventListener('error', (event) => {
-            console.error('Game error:', event.error);
-            // Send error to analytics
+/* Providers */
+async function loadProviders(gameType) {
+    try {
+        const data = await apiCall('/api/v2/provider_list', { game_type: gameType });
+        if (data.status !== 1 || !Array.isArray(data.providers)) return;
+        state.providers = data.providers;
+        renderProviderSidebar(data.providers);
+    } catch (e) { console.error('Provider load failed', e); }
+}
+
+function renderProviderSidebar(providers) {
+    const list = $('provider-list');
+    list.innerHTML = '<button class="provider-btn ' + (state.activeProvider === 'ALL' ? 'active' : '') + '" data-code="ALL"><span class="provider-dot"></span>All Providers</button>';
+    providers.forEach(function(p) {
+        const btn = document.createElement('button');
+        btn.className = 'provider-btn' + (state.activeProvider === p.code ? ' active' : '');
+        btn.dataset.code = p.code;
+        btn.innerHTML = '<span class="provider-dot"></span>' + esc(p.name);
+        list.appendChild(btn);
+    });
+    list.querySelectorAll('.provider-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { selectProvider(btn.dataset.code); });
+    });
+}
+
+function selectProvider(code) {
+    state.activeProvider = code;
+    $$('.provider-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.code === code); });
+    applyFilters();
+}
+
+/* Games */
+async function loadAllGames() {
+    const providerCodes = state.providers.map(function(p) { return p.code; });
+    if (providerCodes.length === 0) {
+        $('games-grid').innerHTML = renderEmpty('No providers available.'); return;
+    }
+    $('games-grid').innerHTML = renderSkeletons(24);
+    const results = await Promise.allSettled(
+        providerCodes.map(function(code) {
+            return apiCall('/api/v2/game_list', { provider_code: code, lang: 'en' });
+        })
+    );
+    const allGames = [];
+    results.forEach(function(r, i) {
+        if (r.status === 'fulfilled' && r.value.status === 1 && Array.isArray(r.value.games)) {
+            r.value.games.forEach(function(g) { g._provider = providerCodes[i]; allGames.push(g); });
+        }
+    });
+    state.games = allGames;
+    applyFilters();
+}
+
+function applyFilters() {
+    let games = state.games;
+    if (state.activeProvider !== 'ALL') {
+        games = games.filter(function(g) { return g._provider === state.activeProvider; });
+    }
+    const q = state.searchQuery.trim().toLowerCase();
+    if (q) {
+        games = games.filter(function(g) {
+            return (g.game_name || '').toLowerCase().includes(q) || (g.game_code || '').toLowerCase().includes(q);
         });
+    }
+    state.filteredGames = games;
+    renderGames(games);
+    const providerName = state.activeProvider === 'ALL'
+        ? 'All Slots'
+        : (state.providers.find(function(p) { return p.code === state.activeProvider; }) || { name: state.activeProvider }).name;
+    $('section-title').textContent = providerName;
+    $('game-count').textContent = games.length + ' game' + (games.length !== 1 ? 's' : '');
+}
 
-        // Your existing JavaScript code here
-        // ... (your existing JavaScript) ...
+function renderSkeletons(n) {
+    let s = '';
+    for (let i = 0; i < n; i++) {
+        s += '<div class="game-card" style="pointer-events:none"><div class="game-thumb" style="background:#1e1e2a"></div><div class="game-info"><div style="height:13px;background:#2a2a3a;border-radius:4px;margin-bottom:6px"></div><div style="height:11px;background:#222230;border-radius:4px;width:60%"></div></div></div>';
+    }
+    return s;
+}
 
-        // Initialize production features
-        document.addEventListener('DOMContentLoaded', () => {
-            // Hide loading screen
-            document.body.classList.add('content-loaded');
-            
-            // Initialize analytics
-            initAnalytics();
-            
-            // Track performance
-            trackPerformance();
-            
-            // Initialize game
-            initGrid();
-            updateInstruction();
-            
-            // Auto-test API on load (only in development)
-            if (window.location.hostname === 'localhost') {
-                setTimeout(testAPI, 1000);
-            }
+function renderEmpty(msg) {
+    return '<div class="empty-state" style="grid-column:1/-1"><span class="icon">&#127920;</span><p>' + esc(msg) + '</p></div>';
+}
+
+function renderGames(games) {
+    if (games.length === 0) { $('games-grid').innerHTML = renderEmpty('No games match your search.'); return; }
+    $('games-grid').innerHTML = games.map(function(g) {
+        const unavailable = g.status === 0;
+        const pTag = g._provider || '';
+        const thumbContent = g.banner
+            ? ('<img src="' + esc(g.banner) + '" alt="' + esc(g.game_name) + '" loading="lazy" onerror="this.style.display=\'none\'">')
+            : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:36px">&#127920;</div>';
+        return '<div class="game-card ' + (unavailable ? 'unavailable' : '') + '" data-code="' + esc(g.game_code) + '" data-name="' + esc(g.game_name) + '" data-provider="' + esc(pTag) + '" title="' + esc(g.game_name) + '">' +
+            '<div class="game-thumb">' + thumbContent +
+            (unavailable ? '<span class="unavailable-badge">Unavailable</span>' : '') +
+            '<div class="game-overlay"><div class="play-icon">&#9654;</div></div></div>' +
+            '<div class="game-info"><p class="game-name">' + esc(g.game_name) + '</p><p class="game-provider-tag">' + esc(pTag) + '</p></div></div>';
+    }).join('');
+    $('games-grid').querySelectorAll('.game-card:not(.unavailable)').forEach(function(card) {
+        card.addEventListener('click', function() {
+            launchGame(card.dataset.provider, card.dataset.code, card.dataset.name);
         });
+    });
+}
 
-        // Service Worker for PWA (optional)
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
-                .then(registration => console.log('SW registered'))
-                .catch(error => console.log('SW registration failed'));
+/* Game launch */
+async function launchGame(providerCode, gameCode, gameName) {
+    if (!state.userCode) { openAuthModal(); toast('Please sign in to play.', 'info'); return; }
+    $('modal-game-title').textContent = gameName;
+    $('game-frame').src = 'about:blank';
+    $('launch-spinner').style.display = 'flex';
+    $('game-modal').classList.add('open');
+    try {
+        const data = await apiCall('/api/v2/game_launch', {
+            user_code: state.userCode, game_type: state.activeType,
+            provider_code: providerCode, game_code: gameCode, lang: 'en'
+        });
+        if (data.status === 1 && data.launch_url) {
+            $('game-frame').src = data.launch_url;
+            if (data.user_balance !== undefined) { state.balance = data.user_balance; saveSession(); updateUserUI(); }
+        } else {
+            closeGameModal();
+            toast(data.msg || 'Failed to launch game.', 'error');
         }
-    </script>
+    } catch (e) {
+        closeGameModal();
+        toast('Could not reach the game server.', 'error');
+    }
+}
+
+function closeGameModal() {
+    $('game-modal').classList.remove('open');
+    $('game-frame').src = 'about:blank';
+    refreshBalance();
+}
+
+$('game-frame').addEventListener('load', function() { $('launch-spinner').style.display = 'none'; });
+$('modal-close-btn').addEventListener('click', closeGameModal);
+$('game-modal').addEventListener('click', function(e) { if (e.target === $('game-modal')) closeGameModal(); });
+
+/* Auth modal */
+let authMode = 'login';
+
+function openAuthModal() {
+    authMode = 'login'; syncAuthForm();
+    $('auth-modal').classList.add('open');
+    setTimeout(function() { $('auth-username').focus(); }, 100);
+}
+function closeAuthModal() { $('auth-modal').classList.remove('open'); }
+
+function syncAuthForm() {
+    const isLogin = authMode === 'login';
+    $('auth-title').textContent  = isLogin ? 'Welcome Back' : 'Create Account';
+    $('auth-sub').textContent    = isLogin ? 'Sign in to play and track your balance' : 'Register to start playing';
+    $('auth-submit').textContent = isLogin ? 'Sign In' : 'Register';
+    $('auth-switch-text').innerHTML = isLogin
+        ? 'New here? <a id="auth-switch-link">Create account</a>'
+        : 'Already have one? <a id="auth-switch-link">Sign in</a>';
+    $('auth-switch-link').addEventListener('click', function() {
+        authMode = authMode === 'login' ? 'register' : 'login'; syncAuthForm();
+    });
+}
+
+$('btn-login').addEventListener('click', openAuthModal);
+$('btn-logout').addEventListener('click', function() {
+    state.userCode = null; state.balance = 0;
+    sessionStorage.removeItem('ks_user');
+    updateUserUI(); toast('Signed out.', 'info');
+});
+$('auth-modal').addEventListener('click', function(e) { if (e.target === $('auth-modal')) closeAuthModal(); });
+
+$('auth-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const username = $('auth-username').value.trim();
+    const errEl = $('username-error');
+    errEl.className = 'form-error';
+    if (!username || username.length < 3) {
+        errEl.textContent = 'Username must be at least 3 characters.';
+        errEl.className = 'form-error show'; return;
+    }
+    if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+        errEl.textContent = 'Username may only contain letters, numbers, _ and -.';
+        errEl.className = 'form-error show'; return;
+    }
+    $('auth-submit').textContent = '\u2026';
+    $('auth-submit').disabled = true;
+    try {
+        state.userCode = username; state.balance = 0;
+        await refreshBalance();
+        saveSession(); updateUserUI(); closeAuthModal();
+        toast('Welcome, ' + username + '!', 'success');
+    } catch (err) {
+        errEl.textContent = 'Could not sign in. Please try again.';
+        errEl.className = 'form-error show'; state.userCode = null;
+    } finally {
+        $('auth-submit').textContent = authMode === 'login' ? 'Sign In' : 'Register';
+        $('auth-submit').disabled = false;
+    }
+});
+
+/* Search */
+$('search-input').addEventListener('input', function(e) {
+    state.searchQuery = e.target.value; applyFilters();
+});
+
+/* Tab bar */
+$$('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', async function() {
+        $$('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        state.activeType = btn.dataset.type;
+        state.games = []; state.activeProvider = 'ALL';
+        await loadProviders(state.activeType);
+        await loadAllGames();
+    });
+});
+
+/* Init */
+async function init() {
+    loadSession(); updateUserUI();
+    await loadProviders(state.activeType);
+    await loadAllGames();
+    const overlay = $('loading-overlay');
+    overlay.classList.add('hidden');
+    setTimeout(function() { overlay.remove(); }, 500);
+    setInterval(refreshBalance, 30000);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>

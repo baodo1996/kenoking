@@ -1,0 +1,72 @@
+# ============================================================
+# luckyluked.com — Apache Web Server Configuration
+# ============================================================
+
+# Redirect HTTP → HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# -------------------------------------------------------
+# Security: block direct access to sensitive files
+# -------------------------------------------------------
+<FilesMatch "(config\.php|\.gitkeep|users\.json)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# -------------------------------------------------------
+# Security headers
+# -------------------------------------------------------
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    # Allow game iframes from the provider domain
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https:; connect-src 'self';"
+</IfModule>
+
+# -------------------------------------------------------
+# Compression
+# -------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/json application/javascript application/x-javascript
+</IfModule>
+
+# -------------------------------------------------------
+# Browser caching
+# -------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+# -------------------------------------------------------
+# PHP settings (Hostinger shared hosting)
+# -------------------------------------------------------
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+
+# -------------------------------------------------------
+# Protect data directory
+# -------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteRule ^data/ - [F,L]
+</IfModule>

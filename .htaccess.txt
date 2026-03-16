@@ -1,4 +1,4 @@
-# Keno Game .htaccess Configuration for keno-king.bet 
+# Keno Game .htaccess Configuration for luckyluked.com 
  
 # Enable compression 
 <IfModule mod_deflate.c> 
