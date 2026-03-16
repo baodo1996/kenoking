@@ -317,8 +317,13 @@ async function refreshBalance() {
         const data = await apiCall('/api/v2/info');
         if (data.status === 1 && Array.isArray(data.user_list)) {
             const u = data.user_list.find(function(x) { return x.user_code === state.userCode; });
-            if (u) { state.balance = u.user_balance; saveSession(); updateUserUI(); }
+            if (u) { state.balance = u.user_balance; saveSession(); updateUserUI(); return; }
         }
+    } catch (e) {}
+    // Fallback: fetch local balance (covers new users not yet on the provider)
+    try {
+        const local = await apiCall('/local/user_balance', { user_code: state.userCode });
+        if (local.status === 1) { state.balance = local.user_balance; saveSession(); updateUserUI(); }
     } catch (e) {}
 }
 

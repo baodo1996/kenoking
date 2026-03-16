@@ -53,7 +53,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $body = requireJsonBody();
 
 // Validate required top-level fields
-if (empty($body['agent_secret']) || empty($body['user_code']) || empty($body['slot'])) {
+if (empty($body['agent_secret']) || empty($body['user_code'])) {
+    http_response_code(400);
+    echo json_encode(['status' => 0, 'user_balance' => 0, 'msg' => 'INVALID_PARAMETER']);
+    exit;
+}
+
+// Support both "slot" and "casino" game type callbacks
+$slot = null;
+if (!empty($body['slot']) && is_array($body['slot'])) {
+    $slot = $body['slot'];
+} elseif (!empty($body['casino']) && is_array($body['casino'])) {
+    $slot = $body['casino'];
+}
+
+if ($slot === null) {
     http_response_code(400);
     echo json_encode(['status' => 0, 'user_balance' => 0, 'msg' => 'INVALID_PARAMETER']);
     exit;
@@ -62,7 +76,6 @@ if (empty($body['agent_secret']) || empty($body['user_code']) || empty($body['sl
 validateSecret((string)$body['agent_secret']);
 
 $userCode = (string)$body['user_code'];
-$slot     = (array)$body['slot'];
 
 if (empty($slot['txn_type'])) {
     http_response_code(400);
