@@ -1,6 +1,9 @@
-User-agent: * 
-Allow: / 
-Disallow: /api/ 
-Disallow: /admin/ 
- 
-Sitemap: https://keno-king.bet/sitemap.xml 
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /gold_api/
+Disallow: /data/
+Disallow: /admin/
+
+Sitemap: https://luckyluked.com/sitemap.xml
+
